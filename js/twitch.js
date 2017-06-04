@@ -34,10 +34,15 @@ $(document).ready(function(){
             let displayName = data1.follows[i].user.display_name;
             following.push(displayName);
         }
-        // push barstoolsports channel to the array of followers
+        // adding to the array of followers
+        following.push("martinimonsters");
         following.push("barstoolsports");
         following.push("brunofin");
         following.push("comster404");
+        following.push("h3h3productions");
+        following.push("noobs2ninjas");
+
+        // console.log(following);
 
         // multiple getJSON calls using a for loop
         for (let j = 0; j < following.length; j++){
@@ -45,14 +50,19 @@ $(document).ready(function(){
 
             $.getJSON(url2).done(function(data2){
                 let logo, status, name;
-                // console.log(data2);
+                // console.log(data2.stream);
+
                 if(data2.stream === null){
-                    $("#offline").html("No one is online. damn.");
+                    $("#followerList").append(`<li>${following[j]} is offline </li>`);
                 } else {
                     // console.log(data2.stream);
-                    $("#onlineFollower").html(`<a href="${data2.stream.channel.url}" target="_blank">${data2.stream.channel.display_name} is ${data2.stream.stream_type} yall check this shit out</a>`);
-                    $("#onlineStatus").html(`<p>he's playing ${data2.stream.game}</p>`);
-                };
+                    $("#followerList").prepend(`<li>
+                        <h3><a href="${data2.stream.channel.url}" target="_blank">${following[j]} is ${data2.stream.stream_type}</h3></a>
+                        <p id="image"><a class="img" href="${data2.stream.channel.url}" target="_blank"><img src="${data2.stream.channel.logo}"></a></p>
+                        Currently streaming: <small>${data2.stream.channel.status}</small>
+                        <p><small>Viewers: ${data2.stream.viewers}</small></p>                     
+                        </li>`);
+                }
             });
         }
     });
